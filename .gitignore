@@ -1,0 +1,18 @@
+# Go binary & build artifacts
+main
+polimarket
+*.exe
+
+# Go modules cache
+vendor/
+
+# Runtime data (не нужны на GitHub Pages)
+data/bets.json
+data/users.json
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

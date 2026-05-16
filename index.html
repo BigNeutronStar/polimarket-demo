@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Полюшко маркет — Рынок прогнозов</title>
+  <meta name="description" content="Полюшко маркет — русскоязычный рынок прогнозов. Делайте ставки на реальные события, создавайте собственные прогнозы.">
+  <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon-16x16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/main.css">
+</head>
+<body>
+
+<!-- SKIP LINK -->
+<a class="skip-link" href="#market-main">Перейти к содержимому</a>
+
+<!-- ── NAVBAR ── -->
+<header>
+  <nav class="navbar" aria-label="Главная навигация">
+    <div class="navbar-top">
+      <!-- Logo -->
+      <a class="navbar-logo" href="#" aria-label="Полюшко маркет — На главную">
+        <svg viewBox="0 0 136 168" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M136.267 152.495C136.267 159.76 136.267 163.392 133.891 165.192C131.516 166.993 128.019 166.012 121.024 164.049L8.63192 132.51C4.41793 131.328 2.31093 130.737 1.09248 129.129C-0.125977 127.522 -0.125977 125.333 -0.125977 120.957V47.0434C-0.125977 42.6667 -0.125977 40.4783 1.09248 38.8709C2.31093 37.2634 4.41792 36.6722 8.63191 35.4897L121.024 3.95096C128.019 1.98834 131.516 1.00703 133.891 2.80771C136.267 4.60839 136.267 8.24049 136.267 15.5047V152.495ZM27.9043 122.228L120.966 148.345V96.1133L27.9043 122.228ZM15.1738 110.111L108.217 84L15.1738 57.8887V110.111ZM27.9033 45.7725L120.966 71.8877V19.6553L27.9033 45.7725Z" fill="currentColor"/>
+        </svg>
+        <span class="navbar-logo-text">Полюшко маркет</span>
+        <span class="navbar-logo-badge">MVP</span>
+      </a>
+
+      <!-- Actions -->
+      <div class="navbar-actions">
+        <div class="user-widget" aria-label="Информация о пользователе">
+          <span class="user-grade" id="user-grade" aria-label="Уровень">1</span>
+          <span id="user-xp" style="font-size:.75rem;color:var(--color-text-tertiary)">0 XP</span>
+        </div>
+        <div class="navbar-balance" id="user-balance" aria-label="Баланс">
+          Баланс: <span>1000 ₽</span>
+        </div>
+        <button class="btn-create-nav" id="btn-create-nav" aria-label="Создать новое событие">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Создать
+        </button>
+      </div>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="navbar-categories" role="tablist" aria-label="Категории событий">
+      <button class="cat-tab active" data-cat="all" role="tab" aria-selected="true">Все</button>
+      <button class="cat-tab" data-cat="politics" role="tab" aria-selected="false">Политика</button>
+      <button class="cat-tab" data-cat="economy" role="tab" aria-selected="false">Экономика</button>
+      <button class="cat-tab" data-cat="crypto" role="tab" aria-selected="false">Крипто</button>
+      <button class="cat-tab" data-cat="culture" role="tab" aria-selected="false">Культура</button>
+      <button class="cat-tab" data-cat="sport" role="tab" aria-selected="false">Спорт</button>
+      <button class="cat-tab" data-cat="belarus" role="tab" aria-selected="false">Беларусь</button>
+      <button class="cat-tab" data-cat="technology" role="tab" aria-selected="false">Технологии</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ── MAIN ── -->
+<main id="market-main" tabindex="-1">
+  <div class="page-main">
+
+    <!-- Market header -->
+    <div class="market-header">
+      <h1 class="market-title">Прогнозы</h1>
+      <button class="btn-create-nav" id="btn-create-modal" aria-label="Создать событие">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Создать событие
+      </button>
+    </div>
+
+    <!-- Inner market tabs -->
+    <nav class="market-tabs" aria-label="Сортировка прогнозов">
+      <button class="market-tab active" data-tab="all">Все</button>
+      <button class="market-tab" data-tab="new">
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="m3.5417,3.6104l-1.7538,4.5807c-.1547.4042.1872.8238.6143.7539l4.8771-.7986c.4271-.0699.6173-.5768.3418-.9105l-3.1233-3.7821c-.2735-.3312-.8025-.2446-.9561.1566Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><circle cx="13.5" cy="4.5" r="2.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="m14.25,12.5167h0c-1.274.9216-2.2147,2.2316-2.681,3.7333h0s0,0,0,0c-.9216-1.274-2.2316-2.2147-3.7333-2.681h0,0c1.274-.9216,2.2147-2.2316,2.681-3.7333h0s0,0,0,0c.9216,1.274,2.2316,2.2147,3.7333,2.681h0Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+        Новые
+      </button>
+      <button class="market-tab" data-tab="trending">
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><path d="M1.75,12.25l3.646-3.646c.195-.195,.512-.195,.707,0l3.293,3.293c.195,.195,.512,.195,.707,0l6.146-6.146" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><polyline points="11.25 5.75 16.25 5.75 16.25 10.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+        Тренды
+      </button>
+      <button class="market-tab" data-tab="popular">Популярные</button>
+      <button class="market-tab" data-tab="liquid">Ликвидные</button>
+      <button class="market-tab" data-tab="ending">
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none"><polyline points="9 4.75 9 9 12.25 11.25" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><circle cx="9" cy="9" r="7.25" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+        Скоро завершатся
+      </button>
+      <button class="market-tab" data-tab="competitive">Конкурентные</button>
+    </nav>
+
+    <!-- Filter bar -->
+    <div class="filter-bar" role="toolbar" aria-label="Фильтры">
+      <!-- Search -->
+      <div class="search-wrap">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="search-input" class="search-input" placeholder="Поиск событий…" aria-label="Поиск событий">
+        <button class="search-clear" id="search-clear" aria-label="Очистить поиск" style="display:none">✕</button>
+      </div>
+
+      <div class="filter-bar-right">
+        <label for="sort-select" class="sr-only">Сортировка</label>
+        <select class="filter-select" id="sort-select" aria-label="Сортировка событий">
+          <option value="volume">↕ По объёму</option>
+          <option value="new">✦ Новые</option>
+          <option value="ending">⏱ Скоро завершатся</option>
+        </select>
+
+        <div class="status-tabs" role="group" aria-label="Фильтр по статусу">
+          <button class="status-tab active" data-status="all" aria-pressed="true">Все</button>
+          <button class="status-tab" data-status="active" aria-pressed="false">Активные</button>
+          <button class="status-tab" data-status="closed" aria-pressed="false">Завершённые</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active filters display -->
+    <div class="active-filters" id="active-filters" style="display:none" aria-live="polite"></div>
+
+    <!-- Events Grid -->
+    <section aria-label="Список событий-прогнозов">
+      <div class="events-grid" id="events-grid" role="list">
+        <!-- populated by JS -->
+      </div>
+      <div class="scroll-sentinel" id="scroll-sentinel" aria-hidden="true"></div>
+      <div class="end-of-list" id="end-of-list" style="display:none">Конец списка</div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── DRAWER ── -->
+<div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+  <div class="drawer-header">
+    <h2 class="drawer-title" id="drawer-title">Сделать ставку</h2>
+    <button class="drawer-close" id="drawer-close" aria-label="Закрыть панель">✕</button>
+  </div>
+  <div class="drawer-body">
+    <p class="drawer-question" id="drawer-question"></p>
+
+    <div class="drawer-meta" aria-label="Детали события">
+      <div class="drawer-meta-item">
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2.75" y="3.75" width="12.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 2v3M12 2v3M2.75 8.75h12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span id="drawer-end-date"></span>
+      </div>
+      <div class="drawer-meta-item">
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2a7 7 0 100 14A7 7 0 009 2z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span id="drawer-category"></span>
+      </div>
+      <div class="drawer-meta-item">
+        <span id="drawer-status-badge" class="card-status active"></span>
+      </div>
+    </div>
+
+    <p class="drawer-desc" id="drawer-desc"></p>
+
+    <!-- Probabilities -->
+    <div class="drawer-probs" aria-label="Текущие вероятности">
+      <div class="drawer-prob-box">
+        <span class="drawer-prob-label" style="color:var(--color-yes)">Да</span>
+        <span class="drawer-prob-val yes" id="drawer-yes-prob">50%</span>
+      </div>
+      <div class="drawer-prob-box">
+        <span class="drawer-prob-label" style="color:var(--color-no)">Нет</span>
+        <span class="drawer-prob-val no" id="drawer-no-prob">50%</span>
+      </div>
+    </div>
+
+    <!-- Choose outcome -->
+    <div>
+      <p class="drawer-section-label">Выберите исход</p>
+      <div class="drawer-choice-tabs" role="group" aria-label="Исход ставки">
+        <button class="choice-tab yes-tab" id="choice-yes" aria-pressed="false">✓ Да</button>
+        <button class="choice-tab no-tab"  id="choice-no"  aria-pressed="false">✗ Нет</button>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div>
+      <p class="drawer-section-label">Сумма ставки</p>
+      <div class="amount-row" role="group" aria-label="Быстрый выбор суммы">
+        <button class="amount-preset" data-amount="50"   aria-label="50 рублей">50 ₽</button>
+        <button class="amount-preset" data-amount="100"  aria-label="100 рублей">100 ₽</button>
+        <button class="amount-preset" data-amount="250"  aria-label="250 рублей">250 ₽</button>
+        <button class="amount-preset" data-amount="500"  aria-label="500 рублей">500 ₽</button>
+        <button class="amount-preset" data-amount="1000" aria-label="1000 рублей">1000 ₽</button>
+      </div>
+      <label for="bet-amount" class="sr-only">Введите сумму ставки</label>
+      <input type="number" id="bet-amount" class="drawer-input" style="margin-top:.5rem"
+        placeholder="Введите сумму (10–10000)" min="10" max="10000" step="10"
+        aria-label="Сумма ставки в рублях">
+    </div>
+
+    <!-- Balance & payout -->
+    <div class="balance-row" aria-label="Баланс">
+      <span>Ваш баланс:</span>
+      <strong id="drawer-balance">—</strong>
+    </div>
+    <div class="payout-row" aria-label="Возможный выигрыш">
+      <span class="payout-label">Возможный выигрыш:</span>
+      <span class="payout-val" id="payout-val">—</span>
+    </div>
+
+    <!-- Error -->
+    <div class="drawer-error" id="drawer-error" role="alert" aria-live="polite"></div>
+
+    <!-- Submit -->
+    <button class="btn-bet" id="btn-bet" aria-label="Подтвердить ставку">
+      Поставить
+    </button>
+  </div>
+</aside>
+
+<!-- ── MODAL: CREATE EVENT ── -->
+<div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title-text">Новое событие</h2>
+      <button class="drawer-close modal-close" id="modal-close" aria-label="Закрыть форму создания">✕</button>
+    </div>
+    <form class="modal-body" id="event-form" novalidate>
+
+      <div class="form-group">
+        <label class="form-label" for="ev-question">Вопрос<span aria-hidden="true">*</span></label>
+        <input type="text" id="ev-question" class="form-input"
+          placeholder="Например: Выиграет ли Беларусь медаль на ЧМ?"
+          minlength="10" maxlength="120" required aria-required="true"
+          aria-describedby="err-question hint-question">
+        <span class="form-hint" id="hint-question">От 10 до 120 символов</span>
+        <span class="form-error" id="err-question" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="ev-desc">Описание</label>
+        <textarea id="ev-desc" class="form-textarea"
+          placeholder="Условия разрешения прогноза, источники данных…"
+          maxlength="1000" aria-describedby="hint-desc"></textarea>
+        <span class="form-hint" id="hint-desc">До 1000 символов (необязательно)</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="ev-category">Категория<span aria-hidden="true">*</span></label>
+        <select id="ev-category" class="form-select" required aria-required="true"
+          aria-describedby="err-category">
+          <option value="">— выберите —</option>
+          <option value="politics">Политика</option>
+          <option value="economy">Экономика</option>
+          <option value="crypto">Крипто</option>
+          <option value="culture">Культура</option>
+          <option value="sport">Спорт</option>
+          <option value="belarus">Беларусь</option>
+          <option value="technology">Технологии</option>
+        </select>
+        <span class="form-error" id="err-category" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="ev-end-date">Дата закрытия<span aria-hidden="true">*</span></label>
+        <input type="date" id="ev-end-date" class="form-input" required aria-required="true"
+          aria-describedby="err-date">
+        <span class="form-error" id="err-date" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="ev-prob">Начальная вероятность «Да»</label>
+        <div class="slider-wrap">
+          <input type="range" id="ev-prob" class="form-slider"
+            min="1" max="99" value="50" aria-valuemin="1" aria-valuemax="99" aria-valuenow="50">
+          <span class="slider-val" id="slider-val" aria-live="polite">50%</span>
+        </div>
+      </div>
+
+    </form>
+    <div class="modal-footer">
+      <button type="submit" class="btn-submit" id="btn-submit" form="event-form">
+        Создать событие
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script src="static/js/app.js"></script>
+</body>
+</html>
