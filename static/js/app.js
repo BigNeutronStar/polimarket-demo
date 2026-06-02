@@ -197,7 +197,7 @@ function updateXpUI(xpGained, prevGrade, newGrade) {
 
   // Balance
   if ($('user-balance')) $('user-balance').innerHTML = `Баланс: <span>${user.balance} ₽</span>`;
-  if ($('sidebar-balance-val')) $('sidebar-balance-val').textContent = `${user.balance} баллов`;
+  if ($('sidebar-balance-val')) $('sidebar-balance-val').textContent = `${user.balance} ₽`;
   if ($('drawer-balance')) $('drawer-balance').textContent = user.balance + ' ₽';
 
   // XP gain animation sequence
@@ -621,10 +621,11 @@ async function init() {
     initDrawer();
     initModal();
     initInfiniteScroll();
+    initDeposit();
 
     // Init sidebar balance
     if ($('sidebar-balance-val') && state.user) {
-      $('sidebar-balance-val').textContent = `${state.user.balance} баллов`;
+      $('sidebar-balance-val').textContent = `${state.user.balance} ₽`;
     }
   } catch(err) {
     $('events-grid').innerHTML = `<div class="end-of-list" style="grid-column:1/-1"><p>⚠️ Ошибка загрузки: ${err.message}</p><p style="margin-top:.5rem;font-size:.8rem;color:#999">Откройте через HTTP-сервер, не двойным кликом на файл</p></div>`;
@@ -633,3 +634,167 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+// ════════════════════════════════════════════════
+// DEPOSIT FLOW (Fake SBP)
+// ════════════════════════════════════════════════
+
+let _depositAmount = 1000;
+const CIRCUMFERENCE = 2 * Math.PI * 36; // r=36 → 226.2
+
+function fmtRub(n) {
+  return n.toLocaleString('ru-RU') + ' ₽';
+}
+
+function initDeposit() {
+  // Amount preset buttons
+  $$('.deposit-amt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.deposit-amt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _depositAmount = parseInt(btn.dataset.amount);
+      $('deposit-custom').value = '';
+      syncDepositSummary();
+    });
+  });
+
+  // Custom amount input
+  $('deposit-custom').addEventListener('input', () => {
+    const val = parseInt($('deposit-custom').value);
+    if (val >= 100) {
+      _depositAmount = val;
+      $$('.deposit-amt').forEach(b => b.classList.remove('active'));
+    }
+    syncDepositSummary();
+  });
+}
+
+function syncDepositSummary() {
+  const el = $('deposit-amount-display');
+  if (el) el.textContent = fmtRub(_depositAmount);
+}
+
+window.openDeposit = function() {
+  // Reset to state 1
+  showDepositState('choose');
+  // Reset custom input
+  $('deposit-custom').value = '';
+  // Restore default preset
+  $$('.deposit-amt').forEach(b => b.classList.toggle('active', b.dataset.amount === '1000'));
+  _depositAmount = 1000;
+  syncDepositSummary();
+
+  const ov = $('deposit-overlay');
+  ov.classList.add('open');
+  ov.removeAttribute('aria-hidden');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeDeposit = function() {
+  const ov = $('deposit-overlay');
+  ov.classList.remove('open');
+  ov.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+};
+
+window.handleDepositOverlayClick = function(e) {
+  if (e.target === $('deposit-overlay')) closeDeposit();
+};
+
+function showDepositState(name) {
+  ['choose','processing','success'].forEach(s => {
+    const el = $(`deposit-state-${s}`);
+    if (el) el.style.display = s === name ? 'flex' : 'none';
+  });
+}
+
+window.startDeposit = function() {
+  showDepositState('processing');
+
+  // Fill processing amount label
+  $('deposit-processing-amount').textContent = fmtRub(_depositAmount);
+
+  // Reset ring & steps
+  const ring = $('deposit-ring-progress');
+  ring.style.strokeDashoffset = CIRCUMFERENCE;
+  $('deposit-ring-pct').textContent = '0%';
+  ['dstep-1','dstep-2','dstep-3'].forEach(id => {
+    const el = $(id);
+    el.classList.remove('done','active-step');
+    el.querySelector('.dstep-icon').textContent = '◌';
+  });
+
+  // Timeline (ms): ring fills over ~2.8s then success
+  const TOTAL_MS = 2800;
+  const start = performance.now();
+
+  // Step reveal schedule
+  const steps = [
+    { id: 'dstep-1', startAt: 0,    doneAt: 900  },
+    { id: 'dstep-2', startAt: 900,  doneAt: 1900 },
+    { id: 'dstep-3', startAt: 1900, doneAt: 2700 },
+  ];
+
+  function tick(now) {
+    const elapsed = now - start;
+    const pct = Math.min(1, elapsed / TOTAL_MS);
+
+    // Ring
+    ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - pct);
+    $('deposit-ring-pct').textContent = Math.round(pct * 100) + '%';
+
+    // Steps
+    steps.forEach(s => {
+      const el = $(s.id);
+      if (elapsed >= s.doneAt) {
+        el.classList.add('done');
+        el.classList.remove('active-step');
+        el.querySelector('.dstep-icon').textContent = '✓';
+      } else if (elapsed >= s.startAt) {
+        el.classList.add('active-step');
+        el.classList.remove('done');
+        el.querySelector('.dstep-icon').textContent = '◉';
+      }
+    });
+
+    if (pct < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      // All done → apply & show success
+      setTimeout(() => applyDepositAndShowSuccess(), 120);
+    }
+  }
+
+  requestAnimationFrame(tick);
+};
+
+function applyDepositAndShowSuccess() {
+  // Update user balance in localStorage
+  const user = LS.get('pm_user');
+  if (user) {
+    user.balance = (user.balance || 0) + _depositAmount;
+    LS.set('pm_user', user);
+    state.user = user;
+
+    // Update all balance displays
+    updateUserUI();
+
+    // Success screen
+    $('deposit-success-amount').textContent = '+' + fmtRub(_depositAmount);
+    $('deposit-new-balance').textContent = fmtRub(user.balance);
+  }
+
+  showDepositState('success');
+
+  // Trigger checkmark animation
+  requestAnimationFrame(() => {
+    const cm = document.querySelector('.deposit-checkmark');
+    if (cm) {
+      cm.classList.remove('draw');
+      // force reflow
+      void cm.getBoundingClientRect();
+      cm.classList.add('draw');
+    }
+  });
+}
